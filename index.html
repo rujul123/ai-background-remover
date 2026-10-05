@@ -64,7 +64,6 @@
             padding: 32px 0 72px;
         }
 
-        /* Header & Navigation */
         .topbar {
             display: flex;
             align-items: center;
@@ -123,7 +122,6 @@
             border-color: rgba(255, 255, 255, 0.12);
         }
 
-        /* Hero Section */
         .hero-section {
             display: grid;
             grid-template-columns: 1.02fr 1.18fr;
@@ -241,7 +239,6 @@
             font-size: 0.8rem;
         }
 
-        /* Editor Panel */
         .editor-panel {
             background: linear-gradient(180deg, rgba(17, 23, 34, 0.96), rgba(11, 17, 27, 0.98));
             border: 1px solid var(--line);
@@ -296,7 +293,7 @@
             margin-bottom: 18px;
         }
 
-        .image-stack {
+        .image-container {
             position: relative;
             width: 100%;
             height: 100%;
@@ -308,15 +305,6 @@
             height: 100%;
             object-fit: cover;
             filter: saturate(1.08) contrast(1.06);
-        }
-
-        .transparent-overlay {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, rgba(15, 18, 26, 0.08), rgba(15, 18, 26, 0.28)),
-                        repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.05) 10px, rgba(255,255,255,0.05) 20px);
-            border: 3px solid;
-            mix-blend-mode: screen;
         }
 
         .empty-state {
@@ -374,7 +362,6 @@
             border-color: rgba(124, 92, 255, 0.4);
         }
 
-        /* Features Section */
         .features-section,
         .workflow-section {
             display: grid;
@@ -462,7 +449,6 @@
             font-size: 0.9rem;
         }
 
-        /* Pricing Banner */
         .pricing-banner {
             display: flex;
             align-items: center;
@@ -485,12 +471,10 @@
             font-size: 0.95rem;
         }
 
-        /* Hidden File Input */
         #fileInput {
             display: none;
         }
 
-        /* Modal for Result */
         .modal {
             display: none;
             position: fixed;
@@ -501,6 +485,7 @@
             background: rgba(0, 0, 0, 0.8);
             z-index: 1000;
             place-items: center;
+            padding: 20px;
         }
 
         .modal.show {
@@ -513,8 +498,10 @@
             border-radius: 32px;
             padding: 32px;
             max-width: 600px;
-            width: 90%;
+            width: 100%;
             text-align: center;
+            max-height: 80vh;
+            overflow-y: auto;
         }
 
         .modal-content h2 {
@@ -527,6 +514,26 @@
             color: var(--muted);
             margin-bottom: 24px;
             line-height: 1.6;
+        }
+
+        .error-message {
+            color: #ff6b6b;
+            background: rgba(255, 107, 107, 0.1);
+            border: 1px solid rgba(255, 107, 107, 0.3);
+            padding: 12px 16px;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            font-size: 0.9rem;
+        }
+
+        .success-message {
+            color: #51cf66;
+            background: rgba(81, 207, 102, 0.1);
+            border: 1px solid rgba(81, 207, 102, 0.3);
+            padding: 12px 16px;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            font-size: 0.9rem;
         }
 
         .modal-buttons {
@@ -549,7 +556,47 @@
             background: rgba(255, 255, 255, 0.06);
         }
 
-        /* Responsive */
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--line);
+            border-top-color: var(--brand);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .comparison-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 24px 0;
+        }
+
+        .comparison-item {
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--line);
+        }
+
+        .comparison-item img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+
+        .comparison-label {
+            font-size: 0.85rem;
+            color: var(--muted);
+            text-align: center;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
         @media (max-width: 980px) {
             .hero-section,
             .feature-grid,
@@ -564,6 +611,10 @@
             .pricing-banner {
                 flex-direction: column;
                 align-items: flex-start;
+            }
+
+            .comparison-container {
+                grid-template-columns: 1fr;
             }
         }
 
@@ -604,33 +655,10 @@
                 min-height: 300px;
             }
         }
-
-        /* Processing State */
-        .processing {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .processing::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            animation: shimmer 1.5s infinite;
-        }
-
-        @keyframes shimmer {
-            0% { left: -100%; }
-            100% { left: 100%; }
-        }
     </style>
 </head>
 <body>
     <div class="app-shell">
-        <!-- Header -->
         <header class="topbar">
             <div class="brand-wrap">
                 <div class="brand-mark">P</div>
@@ -643,11 +671,10 @@
                 <a href="#pricing">Pricing</a>
             </nav>
 
-            <button class="ghost-button">Log in</button>
+            <button class="ghost-button">✓ API Ready</button>
         </header>
 
         <main>
-            <!-- Hero Section -->
             <section class="hero-section">
                 <div class="hero-copy">
                     <span class="eyebrow">Background removal made premium</span>
@@ -680,7 +707,6 @@
                     </div>
                 </div>
 
-                <!-- Editor Panel -->
                 <div class="editor-panel">
                     <div class="panel-header">
                         <span class="panel-pill">AI Editor</span>
@@ -713,7 +739,6 @@
                 </div>
             </section>
 
-            <!-- Features Section -->
             <section id="features" class="features-section">
                 <div class="section-heading">
                     <span class="eyebrow">Built for teams</span>
@@ -741,7 +766,6 @@
                 </div>
             </section>
 
-            <!-- Workflow Section -->
             <section id="workflow" class="workflow-section">
                 <div class="section-heading narrow">
                     <span class="eyebrow">Workflow</span>
@@ -767,7 +791,6 @@
                 </div>
             </section>
 
-            <!-- Pricing Banner -->
             <section id="pricing" class="pricing-banner">
                 <div>
                     <span class="eyebrow">Start free</span>
@@ -778,14 +801,14 @@
         </main>
     </div>
 
-    <!-- Modal -->
+    <!-- Result Modal -->
     <div class="modal" id="resultModal">
         <div class="modal-content">
-            <h2>✓ Background Removed!</h2>
-            <p>Your image has been processed with AI precision. Download it now or make adjustments before exporting.</p>
-            <div class="modal-buttons">
-                <button class="primary-button" onclick="downloadImage()">Download PNG</button>
-                <button class="secondary-button" onclick="closeModal()">Continue Editing</button>
+            <h2 id="resultTitle">Processing...</h2>
+            <p id="resultMessage"></p>
+            <div id="resultContent"></div>
+            <div class="modal-buttons" id="modalButtons">
+                <button class="secondary-button" onclick="closeModal()">Close</button>
             </div>
         </div>
     </div>
@@ -794,6 +817,8 @@
         let selectedImage = null;
         let selectedPreset = 'studio';
         let isProcessing = false;
+        let processedImageUrl = null;
+        const API_KEY = 'USDoStwJi3TVv2WphKSPCFFw';
 
         const presetColors = {
             studio: '#7c5cff',
@@ -804,6 +829,12 @@
         function handleFileChange(event) {
             const file = event.target.files?.[0];
             if (!file) return;
+
+            // Check file size (Remove.bg has 25MB limit for free tier)
+            if (file.size > 25 * 1024 * 1024) {
+                alert('File size exceeds 25MB. Please use a smaller image.');
+                return;
+            }
 
             const reader = new FileReader();
             reader.onload = function(e) {
@@ -817,7 +848,7 @@
         function displayImage(imageSrc) {
             const imageStage = document.getElementById('imageStage');
             imageStage.innerHTML = `
-                <div class="image-stack">
+                <div class="image-container">
                     <img src="${imageSrc}" alt="selected preview" class="upload-image">
                 </div>
             `;
@@ -825,44 +856,103 @@
 
         function selectPreset(preset) {
             selectedPreset = preset;
-            
-            // Update active preset button
             document.querySelectorAll('.preset').forEach(btn => {
                 btn.classList.remove('active');
             });
             document.querySelector(`[data-preset="${preset}"]`).classList.add('active');
         }
 
-        function removeBackground() {
+        async function removeBackground() {
             if (!selectedImage || isProcessing) return;
 
             isProcessing = true;
             document.getElementById('removeBtn').disabled = true;
-            
-            // Add processing state
-            const imageStage = document.getElementById('imageStage');
-            imageStage.classList.add('processing');
 
-            // Simulate 1.5 second processing
-            setTimeout(() => {
+            // Show processing modal
+            document.getElementById('resultTitle').textContent = '✨ Processing...';
+            document.getElementById('resultMessage').textContent = 'Removing background with AI precision...';
+            document.getElementById('resultContent').innerHTML = '<div class="spinner"></div>';
+            document.getElementById('modalButtons').innerHTML = '';
+            document.getElementById('resultModal').classList.add('show');
+
+            try {
+                // Convert base64 to blob
+                const base64Data = selectedImage.split(',')[1];
+                const byteCharacters = atob(base64Data);
+                const byteNumbers = new Array(byteCharacters.length);
+                for (let i = 0; i < byteCharacters.length; i++) {
+                    byteNumbers[i] = byteCharacters.charCodeAt(i);
+                }
+                const byteArray = new Uint8Array(byteNumbers);
+                const blob = new Blob([byteArray], { type: 'image/png' });
+
+                // Create FormData
+                const formData = new FormData();
+                formData.append('image_file', blob);
+                formData.append('size', 'auto');
+                formData.append('format', 'png');
+
+                // Call Remove.bg API
+                const response = await fetch('https://api.remove.bg/v1.0/removebg', {
+                    method: 'POST',
+                    headers: {
+                        'X-Api-Key': API_KEY
+                    },
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    if (response.status === 403) {
+                        throw new Error('Invalid API key. Please check your Remove.bg API key.');
+                    } else if (response.status === 400) {
+                        throw new Error('Invalid image format or too large. Please use JPG, PNG, or WebP under 25MB.');
+                    } else if (response.status === 402) {
+                        throw new Error('Insufficient credits. Please check your Remove.bg account.');
+                    } else {
+                        throw new Error(`API Error: ${response.status} ${response.statusText}`);
+                    }
+                }
+
+                const resultBlob = await response.blob();
+                processedImageUrl = URL.createObjectURL(resultBlob);
+
+                // Show success with before/after comparison
+                document.getElementById('resultTitle').textContent = '✓ Background Removed!';
+                document.getElementById('resultMessage').textContent = 'Your image has been processed with AI precision. Download it now.';
+                document.getElementById('resultContent').innerHTML = `
+                    <div class="comparison-container">
+                        <div class="comparison-item">
+                            <img src="${selectedImage}" alt="original">
+                            <div class="comparison-label">Before</div>
+                        </div>
+                        <div class="comparison-item">
+                            <img src="${processedImageUrl}" alt="result">
+                            <div class="comparison-label">After</div>
+                        </div>
+                    </div>
+                `;
+                document.getElementById('modalButtons').innerHTML = `
+                    <button class="primary-button" onclick="downloadProcessedImage()">📥 Download PNG</button>
+                    <button class="secondary-button" onclick="resetImage(); closeModal()">Process Another</button>
+                `;
+
                 isProcessing = false;
-                imageStage.classList.remove('processing');
-                
-                // Add transparent overlay to simulate removal
-                const imageStack = imageStage.querySelector('.image-stack');
-                const overlay = document.createElement('div');
-                overlay.className = 'transparent-overlay';
-                overlay.style.borderColor = presetColors[selectedPreset];
-                imageStack.appendChild(overlay);
-
-                // Show success modal
-                document.getElementById('resultModal').classList.add('show');
                 document.getElementById('removeBtn').disabled = false;
-            }, 1500);
+
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('resultTitle').textContent = '⚠ Error';
+                document.getElementById('resultMessage').innerHTML = `<div class="error-message">${error.message}</div>`;
+                document.getElementById('resultContent').innerHTML = '';
+                document.getElementById('modalButtons').innerHTML = `<button class="modal-close" onclick="closeModal()">Close</button>`;
+                isProcessing = false;
+                document.getElementById('removeBtn').disabled = false;
+            }
         }
 
         function resetImage() {
             selectedImage = null;
+            processedImageUrl = null;
             selectedPreset = 'studio';
             isProcessing = false;
 
@@ -877,7 +967,6 @@
             document.getElementById('removeBtn').disabled = true;
             document.getElementById('fileInput').value = '';
 
-            // Reset preset
             document.querySelectorAll('.preset').forEach(btn => btn.classList.remove('active'));
             document.querySelector('[data-preset="studio"]').classList.add('active');
         }
@@ -886,15 +975,13 @@
             document.getElementById('resultModal').classList.remove('show');
         }
 
-        function downloadImage() {
-            if (!selectedImage) return;
+        function downloadProcessedImage() {
+            if (!processedImageUrl) return;
 
             const link = document.createElement('a');
-            link.href = selectedImage;
+            link.href = processedImageUrl;
             link.download = `pixelcut-${Date.now()}.png`;
             link.click();
-
-            closeModal();
         }
 
         // Close modal when clicking outside
