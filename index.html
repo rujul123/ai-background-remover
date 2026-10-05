@@ -21,6 +21,7 @@
             --brand: #7c5cff;
             --brand-2: #5de2d2;
             --warm: #f59e0b;
+            --success: #51cf66;
         }
 
         * {
@@ -449,6 +450,127 @@
             font-size: 0.9rem;
         }
 
+        .pricing-section {
+            margin-bottom: 72px;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(280px, 1fr));
+            gap: 24px;
+            margin-top: 48px;
+        }
+
+        .pricing-card {
+            padding: 32px;
+            border: 1px solid var(--line);
+            border-radius: 28px;
+            background: linear-gradient(135deg, rgba(17, 23, 34, 0.8), rgba(11, 17, 27, 0.9));
+            display: grid;
+            gap: 24px;
+            transition: 0.3s ease;
+            position: relative;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(124, 92, 255, 0.4);
+            background: linear-gradient(135deg, rgba(17, 23, 34, 0.95), rgba(11, 17, 27, 1));
+            box-shadow: 0 24px 48px rgba(124, 92, 255, 0.2);
+        }
+
+        .pricing-card.featured {
+            border-color: var(--brand);
+            background: linear-gradient(135deg, rgba(124, 92, 255, 0.15), rgba(93, 226, 210, 0.08));
+        }
+
+        .pricing-card.featured:hover {
+            background: linear-gradient(135deg, rgba(124, 92, 255, 0.2), rgba(93, 226, 210, 0.12));
+            box-shadow: 0 32px 64px rgba(124, 92, 255, 0.3);
+        }
+
+        .featured-badge {
+            position: absolute;
+            top: -12px;
+            right: 32px;
+            background: linear-gradient(135deg, var(--brand), #a78bfa);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .pricing-header {
+            display: grid;
+            gap: 8px;
+        }
+
+        .pricing-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        .pricing-description {
+            color: var(--muted);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .pricing-amount {
+            display: grid;
+            gap: 6px;
+        }
+
+        .pricing-currency {
+            font-size: 1.1rem;
+            color: var(--muted);
+        }
+
+        .pricing-price {
+            font-size: 2.8rem;
+            font-weight: 900;
+            letter-spacing: -0.05em;
+            color: var(--brand-2);
+        }
+
+        .pricing-price span {
+            font-size: 1rem;
+            color: var(--muted);
+            font-weight: 600;
+            margin-left: 4px;
+        }
+
+        .pricing-features {
+            display: grid;
+            gap: 14px;
+            border-top: 1px solid var(--line);
+            border-bottom: 1px solid var(--line);
+            padding: 24px 0;
+        }
+
+        .pricing-feature {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            font-size: 0.95rem;
+            color: var(--muted);
+        }
+
+        .pricing-feature::before {
+            content: '✓';
+            color: var(--success);
+            font-weight: 900;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .pricing-cta {
+            width: 100%;
+        }
+
         .pricing-banner {
             display: flex;
             align-items: center;
@@ -458,6 +580,7 @@
             border: 1px solid var(--line);
             border-radius: 28px;
             background: linear-gradient(135deg, rgba(124, 92, 255, 0.12), rgba(93, 226, 210, 0.08));
+            margin-top: 72px;
         }
 
         .pricing-banner h3 {
@@ -588,6 +711,12 @@
             background: rgba(255, 255, 255, 0.02);
         }
 
+        @media (max-width: 1024px) {
+            .pricing-grid {
+                grid-template-columns: repeat(2, minmax(250px, 1fr));
+            }
+        }
+
         @media (max-width: 980px) {
             .hero-section,
             .feature-grid,
@@ -605,6 +734,10 @@
             }
 
             .comparison-container {
+                grid-template-columns: 1fr;
+            }
+
+            .pricing-grid {
                 grid-template-columns: 1fr;
             }
         }
@@ -645,6 +778,14 @@
             .image-stage {
                 min-height: 300px;
             }
+
+            .pricing-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .pricing-card {
+                padding: 24px;
+            }
         }
     </style>
 </head>
@@ -658,8 +799,8 @@
 
             <nav class="topnav">
                 <a href="#features">Features</a>
-                <a href="#workflow">Workflow</a>
                 <a href="#pricing">Pricing</a>
+                <a href="#workflow">Workflow</a>
             </nav>
 
             <button class="ghost-button">✓ API Active</button>
@@ -757,6 +898,87 @@
                 </div>
             </section>
 
+            <section id="pricing" class="pricing-section">
+                <div class="section-heading">
+                    <span class="eyebrow">Simple pricing</span>
+                    <h2>Choose your plan</h2>
+                </div>
+
+                <div class="pricing-grid">
+                    <div class="pricing-card">
+                        <div class="pricing-header">
+                            <h3 class="pricing-title">Starter</h3>
+                            <p class="pricing-description">Perfect for trying out background removal</p>
+                        </div>
+
+                        <div class="pricing-amount">
+                            <span class="pricing-currency">Free</span>
+                            <div class="pricing-price">₹0<span>/month</span></div>
+                        </div>
+
+                        <div class="pricing-features">
+                            <div class="pricing-feature">50 images per month</div>
+                            <div class="pricing-feature">Standard quality export</div>
+                            <div class="pricing-feature">Basic support</div>
+                        </div>
+
+                        <button class="secondary-button pricing-cta">Get started</button>
+                    </div>
+
+                    <div class="pricing-card featured">
+                        <div class="featured-badge">Most Popular</div>
+                        <div class="pricing-header">
+                            <h3 class="pricing-title">Professional</h3>
+                            <p class="pricing-description">For serious creators & teams</p>
+                        </div>
+
+                        <div class="pricing-amount">
+                            <span class="pricing-currency">₹</span>
+                            <div class="pricing-price">100<span>/week</span></div>
+                        </div>
+
+                        <div class="pricing-features">
+                            <div class="pricing-feature">Unlimited images</div>
+                            <div class="pricing-feature">4K quality export</div>
+                            <div class="pricing-feature">Priority support</div>
+                            <div class="pricing-feature">Batch processing</div>
+                            <div class="pricing-feature">API access</div>
+                        </div>
+
+                        <button class="primary-button pricing-cta" onclick="subscribePlan('Professional', 100)">Subscribe now</button>
+                    </div>
+
+                    <div class="pricing-card">
+                        <div class="pricing-header">
+                            <h3 class="pricing-title">Enterprise</h3>
+                            <p class="pricing-description">For large-scale operations</p>
+                        </div>
+
+                        <div class="pricing-amount">
+                            <span class="pricing-currency">Custom</span>
+                            <div class="pricing-price">Get in<span> touch</span></div>
+                        </div>
+
+                        <div class="pricing-features">
+                            <div class="pricing-feature">Custom limits</div>
+                            <div class="pricing-feature">Dedicated support</div>
+                            <div class="pricing-feature">White-label options</div>
+                            <div class="pricing-feature">SLA guarantees</div>
+                        </div>
+
+                        <button class="secondary-button pricing-cta" onclick="alert('Contact: hello@pixelcut.ai')">Contact sales</button>
+                    </div>
+                </div>
+
+                <div class="pricing-banner">
+                    <div>
+                        <span class="eyebrow">Premium features</span>
+                        <h3>Unlock unlimited edits and priority support</h3>
+                    </div>
+                    <button class="primary-button" onclick="subscribePlan('Professional', 100)">Subscribe ₹100/week</button>
+                </div>
+            </section>
+
             <section id="workflow" class="workflow-section">
                 <div class="section-heading narrow">
                     <span class="eyebrow">Workflow</span>
@@ -781,18 +1003,9 @@
                     </div>
                 </div>
             </section>
-
-            <section id="pricing" class="pricing-banner">
-                <div>
-                    <span class="eyebrow">Free & Instant</span>
-                    <h3>Professional-grade background removal for creators, brands, and teams.</h3>
-                </div>
-                <button class="primary-button">Start now</button>
-            </section>
         </main>
     </div>
 
-    <!-- Result Modal -->
     <div class="modal" id="resultModal">
         <div class="modal-content">
             <h2 id="resultTitle">Processing...</h2>
@@ -804,12 +1017,25 @@
         </div>
     </div>
 
+    <div class="modal" id="subscriptionModal">
+        <div class="modal-content">
+            <h2>Upgrade to Professional</h2>
+            <p id="subscriptionMessage"></p>
+            <div class="modal-buttons">
+                <button class="primary-button" onclick="processPayment()">Pay ₹100 Now</button>
+                <button class="modal-close" onclick="closeSubscriptionModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script>
         let selectedImage = null;
         let selectedPreset = 'studio';
         let isProcessing = false;
         let processedImageUrl = null;
         const API_KEY = 'USDoStwJi3TVv2WphKSPCFFw';
+        const RAZORPAY_KEY = 'rzp_test_xxxxxxxxxx';
 
         function handleFileChange(event) {
             const file = event.target.files?.[0];
@@ -873,7 +1099,6 @@
                 formData.append('size', 'auto');
                 formData.append('format', 'png');
 
-                console.log('Sending request to Remove.bg API...');
                 const response = await fetch('https://api.remove.bg/v1.0/removebg', {
                     method: 'POST',
                     headers: {
@@ -882,11 +1107,8 @@
                     body: formData
                 });
 
-                console.log('Response status:', response.status);
-
                 if (!response.ok) {
                     let errorMsg = `API Error: ${response.status} ${response.statusText}`;
-                    
                     if (response.status === 403) {
                         errorMsg = 'Invalid API key. Authentication failed.';
                     } else if (response.status === 400) {
@@ -896,7 +1118,6 @@
                     } else if (response.status === 429) {
                         errorMsg = 'Rate limit exceeded. Please wait a moment before trying again.';
                     }
-                    
                     throw new Error(errorMsg);
                 }
 
@@ -970,8 +1191,62 @@
             link.click();
         }
 
+        function subscribePlan(planName, price) {
+            document.getElementById('subscriptionMessage').textContent = 
+                `You're about to upgrade to the ${planName} plan for ₹${price}/week. Click "Pay Now" to proceed.`;
+            document.getElementById('subscriptionModal').classList.add('show');
+        }
+
+        function closeSubscriptionModal() {
+            document.getElementById('subscriptionModal').classList.remove('show');
+        }
+
+        function processPayment() {
+            if (!window.Razorpay) {
+                alert('Razorpay SDK not loaded. Replace the test key with your real Razorpay key.');
+                return;
+            }
+
+            if (RAZORPAY_KEY === 'rzp_test_xxxxxxxxxx') {
+                alert('Please replace the placeholder Razorpay key with your real Razorpay test key in the code.');
+                return;
+            }
+
+            const options = {
+                key: RAZORPAY_KEY,
+                amount: 10000,
+                currency: 'INR',
+                name: 'PixelCut AI',
+                description: 'Professional Week Plan',
+                image: 'https://cdn.razorpay.com/logos/your_logo.png',
+                handler: function(response) {
+                    alert('Payment successful! Razorpay payment ID: ' + response.razorpay_payment_id);
+                    closeSubscriptionModal();
+                },
+                prefill: {
+                    name: 'Customer Name',
+                    email: 'customer@example.com',
+                    contact: '9999999999'
+                },
+                notes: {
+                    plan: 'Professional',
+                    billing: 'weekly'
+                },
+                theme: {
+                    color: '#7c5cff'
+                }
+            };
+
+            const rzp = new Razorpay(options);
+            rzp.open();
+        }
+
         document.getElementById('resultModal').addEventListener('click', function(e) {
             if (e.target === this) closeModal();
+        });
+
+        document.getElementById('subscriptionModal').addEventListener('click', function(e) {
+            if (e.target === this) closeSubscriptionModal();
         });
     </script>
 </body>
