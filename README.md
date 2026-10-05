@@ -1,2 +1,4 @@
-# ai-background-remover
-An AI-powered background removal application with a sleek UI
+node_modules
+dist
+.vite
+.DS_Store

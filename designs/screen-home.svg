@@ -1,0 +1,76 @@
+# Figma design plan for PixelCut AI
+
+## Goal
+Create a premium, conversion-friendly AI background remover experience with a clean SaaS aesthetic that feels trustworthy and professional.
+
+## Design system
+
+### Color palette
+- Primary: #7C5CFF
+- Secondary: #5DE2D2
+- Background: #07111F
+- Surface: #0F1728
+- Text: #EDF3FF
+- Muted: #A9B7CF
+- Border: rgba(255,255,255,0.08)
+
+### Typography
+- Headline: Inter / Sora / Manrope (recommended)
+- Weight scale: 500–900
+- Letter spacing: tight for headings, relaxed for body text
+
+### Shape language
+- Card radius: 18–32px
+- Buttons: 14–18px radius
+- Soft overlays and glassmorphism for hero/editor surface
+
+## Screens to design in Figma
+
+### 1. Landing page
+- top navigation
+- premium hero section with headline and CTA buttons
+- stats row
+- product mock editor preview on right
+
+### 2. Upload workflow screen
+- dropzone uploader
+- preset toggle chips
+- image preview area
+- action buttons for remove and reset
+
+### 3. Result / export screen
+- before/after comparison layout
+- transparent background preview checker
+- export buttons and property metadata
+
+### 4. Pricing / CTA block
+- minimal but persuasive conversion section
+- free plan callout
+
+## Suggested Figma structure
+- Frame 1: Landing page
+- Frame 2: Editor screen
+- Frame 3: Result view
+- Frame 4: UI components and design tokens
+
+## Layout specs
+- Max width: 1280px
+- Desktop hero: 2-column layout with left content and right product mock
+- Card spacing: 24–32px
+- Section vertical rhythm: 72px
+
+## Recommended steps
+1. Create the base dark theme.
+2. Build the hero with 2-column composition.
+3. Use a large mock product image and layered gradients.
+4. Design the editor panel with sticky action chips.
+5. Add the CTA and feature grid for conversion polish.
+
+## Design file assets
+- `designs/screen-home.svg`
+- `designs/editor-preview.svg`
+
+These can be imported into Figma as reference images or used as a design starting point.
+
+## Production note
+To connect this UI to a real AI backend, replace the simulated remove-background logic in `src/App.jsx` with an API call that returns a processed image or an object URL.
