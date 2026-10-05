@@ -1,22 +1,906 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="description"
-      content="AI Background Remover — remove image backgrounds with a premium workflow and polished UI."
-    />
-    <title>PixelCut AI</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
-      rel="stylesheet"
-    />
-    <script type="module" src="/src/main.jsx"></script>
-  </head>
-  <body>
-    <div id="root"></div>
-  </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="PixelCut AI - Remove image backgrounds with premium AI technology">
+    <title>PixelCut AI - Background Remover</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #07111f;
+            --panel: rgba(13, 19, 31, 0.84);
+            --panel-strong: #121b2b;
+            --panel-soft: #171d29;
+            --text: #edf3ff;
+            --muted: #a9b7cf;
+            --line: rgba(255, 255, 255, 0.08);
+            --shadow: rgba(0, 0, 0, 0.28);
+            --brand: #7c5cff;
+            --brand-2: #5de2d2;
+            --warm: #f59e0b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: radial-gradient(circle at top left, rgba(124, 92, 255, 0.2), transparent 26%),
+                        radial-gradient(circle at bottom right, rgba(93, 226, 210, 0.14), transparent 30%),
+                        var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button {
+            font: inherit;
+            cursor: pointer;
+            border: none;
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+        }
+
+        .app-shell {
+            width: min(1280px, calc(100% - 48px));
+            margin: 0 auto;
+            padding: 32px 0 72px;
+        }
+
+        /* Header & Navigation */
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 6px;
+            margin-bottom: 32px;
+        }
+
+        .brand-wrap {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .brand-mark {
+            width: 30px;
+            height: 30px;
+            border-radius: 12px;
+            display: grid;
+            place-items: center;
+            background: linear-gradient(135deg, var(--brand), #a78bfa);
+            color: white;
+            box-shadow: 0 12px 30px rgba(124, 92, 255, 0.5);
+            font-weight: 900;
+        }
+
+        .topnav {
+            display: inline-flex;
+            align-items: center;
+            gap: 28px;
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+
+        .topnav a {
+            transition: color 0.2s ease;
+        }
+
+        .topnav a:hover {
+            color: var(--text);
+        }
+
+        .ghost-button {
+            padding: 11px 18px;
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.02);
+            color: var(--text);
+            transition: 0.2s ease;
+        }
+
+        .ghost-button:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.12);
+        }
+
+        /* Hero Section */
+        .hero-section {
+            display: grid;
+            grid-template-columns: 1.02fr 1.18fr;
+            gap: 42px;
+            align-items: center;
+            margin-bottom: 72px;
+        }
+
+        .hero-copy {
+            display: grid;
+            gap: 20px;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            width: fit-content;
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: rgba(124, 92, 255, 0.12);
+            border: 1px solid rgba(124, 92, 255, 0.2);
+            color: #d7ccff;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .hero-copy h1 {
+            font-size: clamp(3rem, 5vw, 5rem);
+            line-height: 0.96;
+            letter-spacing: -0.07em;
+            font-weight: 900;
+        }
+
+        .hero-copy p {
+            max-width: 560px;
+            color: var(--muted);
+            font-size: 1.07rem;
+            line-height: 1.75;
+        }
+
+        .cta-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 14px;
+            margin-top: 6px;
+        }
+
+        .primary-button {
+            background: linear-gradient(135deg, var(--brand), #9d7bff);
+            border: none;
+            color: white;
+            padding: 14px 22px;
+            font-weight: 600;
+            border-radius: 14px;
+            box-shadow: 0 18px 40px rgba(124, 92, 255, 0.38);
+            transition: 0.2s ease;
+        }
+
+        .primary-button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 24px 50px rgba(124, 92, 255, 0.48);
+        }
+
+        .primary-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .secondary-button {
+            padding: 14px 20px;
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--text);
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            transition: 0.2s ease;
+        }
+
+        .secondary-button:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.12);
+        }
+
+        .primary-button.compact,
+        .secondary-button.compact {
+            padding: 10px 14px;
+            font-size: 0.95rem;
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(120px, 1fr));
+            gap: 14px;
+            margin-top: 14px;
+        }
+
+        .stat-card {
+            padding: 14px 16px;
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.02);
+            display: grid;
+            gap: 6px;
+        }
+
+        .stat-card strong {
+            font-size: 1.6rem;
+            letter-spacing: -0.05em;
+        }
+
+        .stat-card span {
+            color: var(--muted);
+            font-size: 0.8rem;
+        }
+
+        /* Editor Panel */
+        .editor-panel {
+            background: linear-gradient(180deg, rgba(17, 23, 34, 0.96), rgba(11, 17, 27, 0.98));
+            border: 1px solid var(--line);
+            border-radius: 32px;
+            padding: 20px;
+            box-shadow: 0 18px 60px var(--shadow);
+        }
+
+        .panel-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 18px;
+        }
+
+        .panel-pill {
+            display: inline-flex;
+            background: rgba(93, 226, 210, 0.12);
+            border: 1px solid rgba(93, 226, 210, 0.16);
+            color: #bbf7ee;
+            padding: 7px 10px;
+            border-radius: 999px;
+            font-size: 0.72rem;
+            font-weight: 600;
+        }
+
+        .mini-button {
+            padding: 8px 12px;
+            font-size: 0.75rem;
+            color: var(--muted);
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            transition: 0.2s ease;
+        }
+
+        .mini-button:hover {
+            color: var(--text);
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .image-stage {
+            position: relative;
+            min-height: 480px;
+            border-radius: 24px;
+            border: 1px solid var(--line);
+            background: linear-gradient(135deg, rgba(124, 92, 255, 0.12), rgba(93, 226, 210, 0.06)),
+                        rgba(255, 255, 255, 0.02);
+            display: grid;
+            place-items: center;
+            overflow: hidden;
+            margin-bottom: 18px;
+        }
+
+        .image-stack {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, #0d1625, #111d2e);
+        }
+
+        .upload-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: saturate(1.08) contrast(1.06);
+        }
+
+        .transparent-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(15, 18, 26, 0.08), rgba(15, 18, 26, 0.28)),
+                        repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.05) 10px, rgba(255,255,255,0.05) 20px);
+            border: 3px solid;
+            mix-blend-mode: screen;
+        }
+
+        .empty-state {
+            display: grid;
+            place-items: center;
+            gap: 12px;
+            padding: 18px;
+            text-align: center;
+            color: var(--muted);
+        }
+
+        .empty-icon {
+            width: 62px;
+            height: 62px;
+            border-radius: 20px;
+            display: grid;
+            place-items: center;
+            background: linear-gradient(135deg, rgba(124, 92, 255, 0.2), rgba(93, 226, 210, 0.18));
+            font-size: 2rem;
+        }
+
+        .tool-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+            flex-wrap: wrap;
+        }
+
+        .preset-group,
+        .action-group {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .preset {
+            padding: 10px 12px;
+            background: rgba(255, 255, 255, 0.02);
+            color: var(--muted);
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            font-size: 0.9rem;
+            transition: 0.2s ease;
+        }
+
+        .preset:hover {
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .preset.active {
+            color: white;
+            background: rgba(124, 92, 255, 0.12);
+            border-color: rgba(124, 92, 255, 0.4);
+        }
+
+        /* Features Section */
+        .features-section,
+        .workflow-section {
+            display: grid;
+            gap: 28px;
+            margin-bottom: 72px;
+        }
+
+        .section-heading {
+            display: grid;
+            gap: 8px;
+        }
+
+        .section-heading h2 {
+            font-size: clamp(2rem, 3vw, 3rem);
+            letter-spacing: -0.06em;
+            font-weight: 900;
+        }
+
+        .narrow {
+            max-width: 620px;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .feature-card,
+        .workflow-step {
+            padding: 24px;
+            border: 1px solid var(--line);
+            border-radius: 26px;
+            background: rgba(255, 255, 255, 0.02);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
+            transition: 0.2s ease;
+        }
+
+        .feature-card:hover,
+        .workflow-step:hover {
+            border-color: rgba(124, 92, 255, 0.2);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .feature-icon {
+            width: 46px;
+            height: 46px;
+            display: grid;
+            place-items: center;
+            background: linear-gradient(135deg, rgba(124, 92, 255, 0.18), rgba(93, 226, 210, 0.18));
+            border: 1px solid rgba(124, 92, 255, 0.2);
+            border-radius: 12px;
+            font-size: 1.3rem;
+            margin-bottom: 18px;
+        }
+
+        .feature-card h3,
+        .workflow-step h3 {
+            font-size: 1.3rem;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .feature-card p,
+        .workflow-step p {
+            color: var(--muted);
+            line-height: 1.7;
+        }
+
+        .workflow-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .workflow-step span {
+            display: inline-flex;
+            margin-bottom: 18px;
+            padding: 8px 10px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.04);
+            color: #d7ccff;
+            border: 1px solid var(--line);
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        /* Pricing Banner */
+        .pricing-banner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            padding: 26px 28px;
+            border: 1px solid var(--line);
+            border-radius: 28px;
+            background: linear-gradient(135deg, rgba(124, 92, 255, 0.12), rgba(93, 226, 210, 0.08));
+        }
+
+        .pricing-banner h3 {
+            margin: 12px 0 0;
+            font-size: clamp(1.4rem, 3vw, 2.2rem);
+            letter-spacing: -0.05em;
+        }
+
+        .pricing-banner span {
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+
+        /* Hidden File Input */
+        #fileInput {
+            display: none;
+        }
+
+        /* Modal for Result */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            place-items: center;
+        }
+
+        .modal.show {
+            display: grid;
+        }
+
+        .modal-content {
+            background: var(--panel-strong);
+            border: 1px solid var(--line);
+            border-radius: 32px;
+            padding: 32px;
+            max-width: 600px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .modal-content h2 {
+            font-size: 2rem;
+            margin-bottom: 16px;
+            color: var(--brand-2);
+        }
+
+        .modal-content p {
+            color: var(--muted);
+            margin-bottom: 24px;
+            line-height: 1.6;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .modal-close {
+            padding: 12px 20px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            color: var(--text);
+            transition: 0.2s ease;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        /* Responsive */
+        @media (max-width: 980px) {
+            .hero-section,
+            .feature-grid,
+            .workflow-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .topnav {
+                display: none;
+            }
+
+            .pricing-banner {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        @media (max-width: 620px) {
+            .app-shell {
+                width: calc(100% - 28px);
+                padding: 16px 0 48px;
+            }
+
+            .topbar {
+                padding: 12px 4px;
+            }
+
+            .hero-copy h1 {
+                font-size: 2.5rem;
+            }
+
+            .stat-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tool-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .preset-group {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .action-group {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .image-stage {
+                min-height: 300px;
+            }
+        }
+
+        /* Processing State */
+        .processing {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .processing::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            animation: shimmer 1.5s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-shell">
+        <!-- Header -->
+        <header class="topbar">
+            <div class="brand-wrap">
+                <div class="brand-mark">P</div>
+                <div class="brand-text">PixelCut AI</div>
+            </div>
+
+            <nav class="topnav">
+                <a href="#features">Features</a>
+                <a href="#workflow">Workflow</a>
+                <a href="#pricing">Pricing</a>
+            </nav>
+
+            <button class="ghost-button">Log in</button>
+        </header>
+
+        <main>
+            <!-- Hero Section -->
+            <section class="hero-section">
+                <div class="hero-copy">
+                    <span class="eyebrow">Background removal made premium</span>
+                    <h1>Erase the noise. Keep the subject.</h1>
+                    <p>
+                        Turn product shots, portraits, and marketing imagery into polished assets with
+                        lightning-fast AI cutout and export tools.
+                    </p>
+
+                    <div class="cta-row">
+                        <button class="primary-button" onclick="document.getElementById('fileInput').click()">
+                            Upload image
+                        </button>
+                        <button class="secondary-button">Watch demo</button>
+                    </div>
+
+                    <div class="stat-grid">
+                        <div class="stat-card">
+                            <strong>12s</strong>
+                            <span>Average processing</span>
+                        </div>
+                        <div class="stat-card">
+                            <strong>99.2%</strong>
+                            <span>Edge accuracy</span>
+                        </div>
+                        <div class="stat-card">
+                            <strong>4K</strong>
+                            <span>Export quality</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Editor Panel -->
+                <div class="editor-panel">
+                    <div class="panel-header">
+                        <span class="panel-pill">AI Editor</span>
+                        <button class="mini-button">Auto enhance</button>
+                    </div>
+
+                    <div class="image-stage" id="imageStage">
+                        <div class="empty-state">
+                            <div class="empty-icon">✨</div>
+                            <p>Drop a JPG, PNG, or HEIC image to remove the background.</p>
+                        </div>
+                    </div>
+
+                    <div class="tool-row">
+                        <div class="preset-group" id="presetGroup">
+                            <button class="preset active" data-preset="studio" onclick="selectPreset('studio')">Studio</button>
+                            <button class="preset" data-preset="nature" onclick="selectPreset('nature')">Nature</button>
+                            <button class="preset" data-preset="product" onclick="selectPreset('product')">Product</button>
+                        </div>
+
+                        <div class="action-group">
+                            <button class="primary-button compact" id="removeBtn" onclick="removeBackground()" disabled>
+                                Remove background
+                            </button>
+                            <button class="secondary-button compact" onclick="resetImage()">Reset</button>
+                        </div>
+                    </div>
+
+                    <input type="file" id="fileInput" accept="image/*" onchange="handleFileChange(event)">
+                </div>
+            </section>
+
+            <!-- Features Section -->
+            <section id="features" class="features-section">
+                <div class="section-heading">
+                    <span class="eyebrow">Built for teams</span>
+                    <h2>Everything you need for premium visuals</h2>
+                </div>
+
+                <div class="feature-grid">
+                    <article class="feature-card">
+                        <div class="feature-icon">✨</div>
+                        <h3>Instant AI Cutout</h3>
+                        <p>Remove backgrounds in seconds with precision masking built for e-commerce, portraits, and social content.</p>
+                    </article>
+
+                    <article class="feature-card">
+                        <div class="feature-icon">✨</div>
+                        <h3>Pro-Level Templates</h3>
+                        <p>Swap into studio scenes, transparent PNG exports, and campaign-ready visuals without leaving the editor.</p>
+                    </article>
+
+                    <article class="feature-card">
+                        <div class="feature-icon">✨</div>
+                        <h3>One-Click Export</h3>
+                        <p>Download in high resolution, optimize for web, or generate social-ready exports for your production pipeline.</p>
+                    </article>
+                </div>
+            </section>
+
+            <!-- Workflow Section -->
+            <section id="workflow" class="workflow-section">
+                <div class="section-heading narrow">
+                    <span class="eyebrow">Workflow</span>
+                    <h2>From upload to export in three steps</h2>
+                </div>
+
+                <div class="workflow-grid">
+                    <div class="workflow-step">
+                        <span>01</span>
+                        <h3>Upload</h3>
+                        <p>Drag in a product shot, portrait, or lifestyle image from your camera roll.</p>
+                    </div>
+                    <div class="workflow-step">
+                        <span>02</span>
+                        <h3>Smart cutout</h3>
+                        <p>Our AI isolates the subject edge while preserving hair, shadows, and detail.</p>
+                    </div>
+                    <div class="workflow-step">
+                        <span>03</span>
+                        <h3>Export</h3>
+                        <p>Download transparent PNGs, website-optimized JPGs, or campaign social assets.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Pricing Banner -->
+            <section id="pricing" class="pricing-banner">
+                <div>
+                    <span class="eyebrow">Start free</span>
+                    <h3>Professional-grade edits for creators, brands, and teams.</h3>
+                </div>
+                <button class="primary-button">Get started</button>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal" id="resultModal">
+        <div class="modal-content">
+            <h2>✓ Background Removed!</h2>
+            <p>Your image has been processed with AI precision. Download it now or make adjustments before exporting.</p>
+            <div class="modal-buttons">
+                <button class="primary-button" onclick="downloadImage()">Download PNG</button>
+                <button class="secondary-button" onclick="closeModal()">Continue Editing</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedImage = null;
+        let selectedPreset = 'studio';
+        let isProcessing = false;
+
+        const presetColors = {
+            studio: '#7c5cff',
+            nature: '#10b981',
+            product: '#f59e0b'
+        };
+
+        function handleFileChange(event) {
+            const file = event.target.files?.[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                selectedImage = e.target.result;
+                displayImage(selectedImage);
+                document.getElementById('removeBtn').disabled = false;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function displayImage(imageSrc) {
+            const imageStage = document.getElementById('imageStage');
+            imageStage.innerHTML = `
+                <div class="image-stack">
+                    <img src="${imageSrc}" alt="selected preview" class="upload-image">
+                </div>
+            `;
+        }
+
+        function selectPreset(preset) {
+            selectedPreset = preset;
+            
+            // Update active preset button
+            document.querySelectorAll('.preset').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`[data-preset="${preset}"]`).classList.add('active');
+        }
+
+        function removeBackground() {
+            if (!selectedImage || isProcessing) return;
+
+            isProcessing = true;
+            document.getElementById('removeBtn').disabled = true;
+            
+            // Add processing state
+            const imageStage = document.getElementById('imageStage');
+            imageStage.classList.add('processing');
+
+            // Simulate 1.5 second processing
+            setTimeout(() => {
+                isProcessing = false;
+                imageStage.classList.remove('processing');
+                
+                // Add transparent overlay to simulate removal
+                const imageStack = imageStage.querySelector('.image-stack');
+                const overlay = document.createElement('div');
+                overlay.className = 'transparent-overlay';
+                overlay.style.borderColor = presetColors[selectedPreset];
+                imageStack.appendChild(overlay);
+
+                // Show success modal
+                document.getElementById('resultModal').classList.add('show');
+                document.getElementById('removeBtn').disabled = false;
+            }, 1500);
+        }
+
+        function resetImage() {
+            selectedImage = null;
+            selectedPreset = 'studio';
+            isProcessing = false;
+
+            const imageStage = document.getElementById('imageStage');
+            imageStage.innerHTML = `
+                <div class="empty-state">
+                    <div class="empty-icon">✨</div>
+                    <p>Drop a JPG, PNG, or HEIC image to remove the background.</p>
+                </div>
+            `;
+
+            document.getElementById('removeBtn').disabled = true;
+            document.getElementById('fileInput').value = '';
+
+            // Reset preset
+            document.querySelectorAll('.preset').forEach(btn => btn.classList.remove('active'));
+            document.querySelector('[data-preset="studio"]').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('resultModal').classList.remove('show');
+        }
+
+        function downloadImage() {
+            if (!selectedImage) return;
+
+            const link = document.createElement('a');
+            link.href = selectedImage;
+            link.download = `pixelcut-${Date.now()}.png`;
+            link.click();
+
+            closeModal();
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('resultModal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+    </script>
+</body>
 </html>
